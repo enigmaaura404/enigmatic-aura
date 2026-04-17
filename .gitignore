@@ -1,45 +1,34 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-*.class
-*.exe
-*.dll
-*.so
-*.a
-*.out
+# CodeIgniter writable directories
+writable/cache/
+writable/session/
+writable/logs/
+writable/uploads/
 
-# Dependencies
-vendor/
-node_modules/
+# Environment specific files
 .env
 .env.local
 .env.*
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-*.swo
+# Dependencies
+vendor/
+node_modules/
 
-# Editors
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+*.tmp
 
-# System files
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Logs
+*.log
 
-# Build directories
+# Build artifacts
 dist/
 build/
 target/
