@@ -79,7 +79,7 @@ npm -v
 ### Step 1: Clone or Navigate to Project
 
 ```bash
-cd /workspace
+git clone https://github.com/enigmaaura404/enigmatic-aura.git && cd enigmatic_aura
 ```
 
 ### Step 2: Install PHP Dependencies
