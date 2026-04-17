@@ -20,10 +20,9 @@ $routes->set404Override();
 $routes->setAutoRoute(false); // 🔒 Security: Disable auto-routing
 
 // =============================================================================
-// 🛡️ FILTERS (Load once for all routes)
+// 🔒 FILTERS (Load once for all routes)
 // =============================================================================
-$authFilter = 'auth'; // Custom filter for admin protection
-$csrfFilter = 'csrf'; // Built-in CSRF protection
+// Note: Filters are now applied directly in route groups
 
 // =============================================================================
 // 🌐 PUBLIC ROUTES (Landing Page)
@@ -44,21 +43,21 @@ $routes->get('/project/(:segment)', 'Landing::project/$1', ['as' => 'project.det
 // =============================================================================
 // 📡 API ROUTES (AJAX / Frontend Interactions)
 // =============================================================================
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+$routes->group('api', ['namespace' => 'App\Controllers\Api', 'filter' => 'csrf'], function($routes) {
     
     // Public API (No Auth Required)
-    $routes->post('contact/send', 'ContactController::send', ['filter' => $csrfFilter]);
+    $routes->post('contact/send', 'ContactController::send');
     $routes->get('projects/list', 'ProjectController::list');
     $routes->get('skills/list', 'SkillController::list');
     
     // Theme Preference (Save user dark/light mode)
-    $routes->post('theme/preference', 'ThemeController::setPreference', ['filter' => $csrfFilter]);
+    $routes->post('theme/preference', 'ThemeController::setPreference');
 });
 
 // =============================================================================
 // 🔐 ADMIN DASHBOARD ROUTES (TailAdmin Architecture)
 // =============================================================================
-$routes->group('admin', ['filter' => $authFilter, 'namespace' => 'App\Controllers\Admin'], function($routes) {
+$routes->group('admin', ['filter' => 'auth', 'namespace' => 'App\Controllers\Admin'], function($routes) {
     
     // Dashboard Overview
     $routes->get('/', 'Dashboard::index', ['as' => 'admin.dashboard']);
@@ -91,14 +90,14 @@ $routes->group('admin', ['filter' => $authFilter, 'namespace' => 'App\Controller
     // 📝 Content Management (Landing Page Editor)
     // ─────────────────────────────────────────────────────────────────────
     $routes->get('content/landing', 'ContentController::landing', ['as' => 'admin.content.landing']);
-    $routes->post('content/landing/update', 'ContentController::updateLanding', ['filter' => $csrfFilter, 'as' => 'admin.content.landing.update']);
+    $routes->post('content/landing/update', 'ContentController::updateLanding', ['as' => 'admin.content.landing.update']);
     
     // ─────────────────────────────────────────────────────────────────────
     // 👤 Authentication & Profile (Within Admin Area)
     // ─────────────────────────────────────────────────────────────────────
     $routes->get('profile', 'AuthController::profile', ['as' => 'admin.profile']);
-    $routes->post('profile/update', 'AuthController::updateProfile', ['filter' => $csrfFilter, 'as' => 'admin.profile.update']);
-    $routes->post('logout', 'AuthController::logout', ['filter' => $csrfFilter, 'as' => 'admin.logout']);
+    $routes->post('profile/update', 'AuthController::updateProfile', ['as' => 'admin.profile.update']);
+    $routes->post('logout', 'AuthController::logout', ['as' => 'admin.logout']);
 });
 
 // =============================================================================
@@ -106,14 +105,14 @@ $routes->group('admin', ['filter' => $authFilter, 'namespace' => 'App\Controller
 // =============================================================================
 $routes->group('auth', ['namespace' => 'App\Controllers\Auth'], function($routes) {
     $routes->get('login', 'LoginController::index', ['as' => 'login']);
-    $routes->post('login/process', 'LoginController::authenticate', ['filter' => $csrfFilter, 'as' => 'login.process']);
+    $routes->post('login/process', 'LoginController::authenticate', ['as' => 'login.process']);
     
     // Optional: Register (if you want public registration)
     // $routes->get('register', 'RegisterController::index', ['as' => 'register']);
-    // $routes->post('register/process', 'RegisterController::create', ['filter' => $csrfFilter, 'as' => 'register.process']);
+    // $routes->post('register/process', 'RegisterController::create', ['as' => 'register.process']);
     
     $routes->get('forgot-password', 'ForgotPasswordController::index', ['as' => 'forgot.password']);
-    $routes->post('forgot-password/send', 'ForgotPasswordController::sendLink', ['filter' => $csrfFilter, 'as' => 'forgot.password.send']);
+    $routes->post('forgot-password/send', 'ForgotPasswordController::sendLink', ['as' => 'forgot.password.send']);
 });
 
 // =============================================================================
