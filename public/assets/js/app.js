@@ -183,6 +183,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+  // 🔹 Contact Form Handler with AJAX
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(contactForm);
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<span>Sending...</span>';
+      submitBtn.disabled = true;
+      
+      try {
+        const response = await fetch('/api/contact/send', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showToast(result.message || 'Message sent successfully!', 'success');
+          contactForm.reset();
+        } else {
+          showToast(result.errors ? Object.values(result.errors).join(', ') : 'Failed to send message', 'error');
+        }
+      } catch (error) {
+        console.error('Contact form error:', error);
+        showToast('An error occurred. Please try again.', 'error');
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+  
   // 🔹 Mobile Menu Toggle
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
