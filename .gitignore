@@ -1,1 +1,1 @@
-Nothing needs to be added to the .gitignore file based on the provided file changes, as they only include source code files (.php) and no build artifacts, dependencies, or temporary files.
+Nothing needs to be added to .gitignore since the changes only include markdown files (.md) which are source/config files and not build artifacts, dependencies, or temporary files.
