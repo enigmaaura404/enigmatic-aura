@@ -1,8 +1,5 @@
 <?php namespace App\Controllers;
-use CodeIgniter\Controller;
-
-class Dashboard extends Controller {
-    public function index() {
-        return view('dashboard/index');
-    }
+class Dashboard extends \CodeIgniter\Controller {
+    public function index() { return view('dashboard/index'); }
+    public function projects() { return view('dashboard/projects'); }
 }

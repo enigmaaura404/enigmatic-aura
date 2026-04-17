@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth theme transition */
+/* Base & Smooth Transitions */
 html { scroll-behavior: smooth; }
-body { @apply transition-colors duration-300 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100; }
+body { @apply antialiased transition-colors duration-300 bg-surface-light dark:bg-surface-dark text-gray-900 dark:text-gray-100; }
+
+/* Scrollbar Custom */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-gray-700 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-gray-400 dark:bg-gray-600; }
+
+/* Loader Screen */
+#loader { @apply fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-gray-950 transition-opacity duration-500; }
+#loader.hidden { @apply opacity-0 pointer-events-none; }
+.spinner { @apply w-12 h-12 border-4 border-brand-500/30 border-t-brand-500 rounded-full animate-spin; }

@@ -1,50 +1,43 @@
-<?= $this->extend('dashboard/layout') ?>
-
+<?= $this->extend('layouts/dashboard') ?>
 <?= $this->section('content') ?>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  <?php foreach([
-    ['label' => 'Total Projects', 'value' => '24', 'change' => '+12%'],
-    ['label' => 'Active Users', 'value' => '1.2k', 'change' => '+5%'],
-    ['label' => 'Page Views', 'value' => '8.4k', 'change' => '+18%']
-  ] as $card): ?>
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-      <p class="text-sm text-gray-500 dark:text-gray-400"><?= $card['label'] ?></p>
-      <div class="flex items-end gap-2 mt-1">
-        <span class="text-3xl font-bold"><?= $card['value'] ?></span>
-        <span class="text-sm text-green-500 font-medium"><?= $card['change'] ?></span>
+<div class="space-y-6">
+  <h2 class="text-2xl font-bold">Dashboard Overview</h2>
+  
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <?php foreach([
+      ['label' => 'Total Projects', 'val' => '24', 'trend' => '+12%', 'color' => 'text-emerald-500'],
+      ['label' => 'Active Users', 'val' => '1.2k', 'trend' => '+5%', 'color' => 'text-brand-500'],
+      ['label' => 'Page Views', 'val' => '8.4k', 'trend' => '+18%', 'color' => 'text-purple-500'],
+      ['label' => 'Server Uptime', 'val' => '99.9%', 'trend' 'Stable', 'color' => 'text-blue-500']
+    ] as $c): ?>
+      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <p class="text-sm text-gray-500 dark:text-gray-400"><?= $c['label'] ?></p>
+        <div class="flex items-end gap-2 mt-1">
+          <span class="text-3xl font-bold"><?= $c['val'] ?></span>
+          <span class="text-xs font-medium <?= $c['color'] ?>"><?= $c['trend'] ?></span>
+        </div>
       </div>
-    </div>
-  <?php endforeach; ?>
-</div>
-
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-  <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-    <h3 class="font-semibold">Recent Projects</h3>
-    <button onclick="showToast('Create form coming soon', 'info')" class="px-3 py-1 bg-brand-600 text-white text-sm rounded hover:bg-brand-500">+ Add</button>
+    <?php endforeach; ?>
   </div>
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm text-left">
-      <thead class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-        <tr><th class="p-4">Name</th><th class="p-4">Tech</th><th class="p-4">Status</th><th class="p-4">Actions</th></tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-        <?php foreach([
-          ['E-Commerce UI', 'React + Tailwind', 'Live'],
-          ['Portfolio v3', 'CI4 + Alpine', 'Draft'],
-          ['SaaS Dashboard', 'Next.js', 'Testing']
-        ] as $p): ?>
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-            <td class="p-4 font-medium"><?= $p[0] ?></td>
-            <td class="p-4"><?= $p[1] ?></td>
-            <td class="p-4"><span class="px-2 py-1 rounded bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs"><?= $p[2] ?></span></td>
-            <td class="p-4 space-x-2">
-              <button class="text-brand-600 hover:underline">Edit</button>
-              <button onclick="showToast('Item deleted', 'error')" class="text-red-500 hover:underline">Delete</button>
-            </td>
-          </tr>
+
+  <!-- Chart Placeholder & Activity -->
+  <div class="grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 class="font-semibold mb-4">Traffic Overview</h3>
+      <div class="h-64 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400">📊 Chart Area (Integrate Chart.js / ApexCharts here)</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 class="font-semibold mb-4">Recent Activity</h3>
+      <ul class="space-y-4 text-sm">
+        <?php foreach(['New deployment pushed', 'User Adi updated profile', 'Backup completed', 'SSL renewed'] as $act): ?>
+          <li class="flex gap-3 items-start">
+            <span class="w-2 h-2 mt-1.5 rounded-full bg-brand-500 flex-shrink-0"></span>
+            <span class="text-gray-600 dark:text-gray-300"><?= $act ?></span>
+          </li>
         <?php endforeach; ?>
-      </tbody>
-    </table>
+      </ul>
+    </div>
   </div>
 </div>
 <?= $this->endSection() ?>
