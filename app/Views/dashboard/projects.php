@@ -1,37 +1,87 @@
 <?= $this->extend('layouts/dashboard') ?>
 <?= $this->section('content') ?>
+
 <div class="space-y-6">
-  <!-- Page Header -->
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+  <!-- Page Header with Enhanced Design -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
     <div>
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><?= esc($title ?? 'Manage Projects') ?></h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Create, edit, and manage your projects</p>
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 flex items-center justify-center text-2xl">📁</div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><?= esc($title ?? 'Manage Projects') ?></h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Create, edit, and showcase your amazing projects</p>
+        </div>
+      </div>
     </div>
-    <button onclick="openModal('project-modal')" class="px-5 py-2.5 bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-lg hover:shadow-brand-500/25 flex items-center gap-2">
-      <span class="text-lg">+</span> New Project
+    <button onclick="openModal('project-modal')" class="group px-5 py-2.5 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-600 hover:from-brand-500 hover:via-brand-400 hover:to-brand-500 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/30 flex items-center gap-2 transform hover:scale-105">
+      <span class="text-lg group-hover:rotate-90 transition-transform duration-300">+</span> 
+      <span>New Project</span>
     </button>
   </div>
   
-  <!-- Filters & Search -->
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-4">
-    <div class="flex flex-col lg:flex-row gap-4">
-      <div class="flex-1 relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
-        <input type="text" placeholder="Search projects..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent focus:outline-none transition-all">
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total Projects</p>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-1">24</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 flex items-center justify-center text-2xl">📊</div>
       </div>
-      <div class="flex gap-3">
-        <select class="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all">
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-l-4 border-l-emerald-500 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Published</p>
+          <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">18</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 flex items-center justify-center text-2xl">✓</div>
+      </div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-l-4 border-l-amber-500 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Drafts</p>
+          <p class="text-3xl font-bold text-amber-600 dark:text-amber-400 mt-1">4</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 flex items-center justify-center text-2xl">⏳</div>
+      </div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-l-4 border-l-purple-500 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Archived</p>
+          <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-1">2</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 flex items-center justify-center text-2xl">📦</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filters & Search with Enhanced Design -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-5">
+    <div class="flex flex-col lg:flex-row gap-4">
+      <div class="flex-1 relative group">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-500 transition-colors">🔍</span>
+        <input type="text" placeholder="Search projects by name, tech stack..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent focus:outline-none transition-all placeholder-gray-400">
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <select class="px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all cursor-pointer">
           <option value="">All Status</option>
           <option value="published">Published</option>
           <option value="draft">Draft</option>
           <option value="archived">Archived</option>
         </select>
-        <select class="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all">
+        <select class="px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all cursor-pointer">
           <option value="">Sort By</option>
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
           <option value="name">Name A-Z</option>
         </select>
+        <button class="px-5 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+          <span>Filter</span>
+        </button>
       </div>
     </div>
   </div>
@@ -114,23 +164,28 @@
       </table>
     </div>
     
-    <!-- Pagination -->
-    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="text-sm text-gray-500 dark:text-gray-400">Showing <span class="font-semibold text-gray-900 dark:text-white">1-4</span> of <span class="font-semibold text-gray-900 dark:text-white">24</span> projects</p>
-      <div class="flex items-center gap-2">
-        <button class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all" disabled>
-          ← Previous
-        </button>
-        <div class="flex items-center gap-1">
-          <button class="w-9 h-9 flex items-center justify-center text-sm font-medium bg-brand-600 text-white rounded-lg">1</button>
-          <button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">2</button>
-          <button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">3</button>
-          <span class="px-2 text-gray-400">...</span>
-          <button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">6</button>
+    <!-- Enhanced Pagination -->
+    <div class="px-6 py-5 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <p class="text-sm text-gray-600 dark:text-gray-400">Showing <span class="font-semibold text-gray-900 dark:text-white">1-4</span> of <span class="font-semibold text-gray-900 dark:text-white">24</span> projects</p>
+          <span class="px-3 py-1 bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 rounded-full text-xs font-medium">Page 1 of 6</span>
         </div>
-        <button class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
-          Next →
-        </button>
+        <div class="flex items-center gap-2">
+          <button class="group px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md" disabled>
+            <span class="group-hover:-translate-x-0.5 inline-block transition-transform">←</span> Previous
+          </button>
+          <div class="hidden sm:flex items-center gap-1.5">
+            <button class="w-10 h-10 flex items-center justify-center text-sm font-semibold bg-gradient-to-r from-brand-600 to-brand-500 text-white rounded-xl shadow-md">1</button>
+            <button class="w-10 h-10 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 rounded-xl transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-600">2</button>
+            <button class="w-10 h-10 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 rounded-xl transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-600">3</button>
+            <span class="px-2 text-gray-400">...</span>
+            <button class="w-10 h-10 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 rounded-xl transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-600">6</button>
+          </div>
+          <button class="group px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm hover:shadow-md">
+            Next <span class="group-hover:translate-x-0.5 inline-block transition-transform">→</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
