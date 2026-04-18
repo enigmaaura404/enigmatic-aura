@@ -1,13 +1,9 @@
 ```
-# CodeIgniter specific
+# Writable directory contents
 writable/cache/
 writable/debugbar/
 writable/logs/
-public/null/
-
-# Session files
-**/ci_session*
-
-# Logs
-*.log
+writable/session/
+writable/uploads/
+writable/.htaccess
 ```
