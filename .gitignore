@@ -5,7 +5,7 @@ __pycache__/
 
 # Dependencies
 vendor/
-node_modules/
+composer.lock
 
 # Logs and temp files
 *.log
@@ -23,17 +23,4 @@ node_modules/
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Cache directories
-.cache/
-.mypy_cache/
-.pytest_cache/
-coverage/
-htmlcov/
-*.coverage
-
-# Build directories
-dist/
-build/
-target/
 ```
