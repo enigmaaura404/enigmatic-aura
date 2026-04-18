@@ -2,142 +2,144 @@
 
 ## What is EnigmaticAura?
 
-EnigmaticAura is a modern, professional portfolio website built with **CodeIgniter 4** framework. It features:
-- A beautiful, responsive landing page with dark/light mode toggle
-- A comprehensive admin dashboard for content management
-- RESTful API endpoints for dynamic interactions
-- Secure authentication system with route protection
+EnigmaticAura adalah website portfolio profesional modern yang dibangun menggunakan framework **CodeIgniter 4**. Platform ini menyediakan:
 
-More information about CodeIgniter can be found at the [official site](https://codeigniter.com).
+- **Landing Page** yang menarik dengan animasi smooth dan dark/light mode toggle
+- **Admin Dashboard** komprehensif berbasis TailAdmin untuk manajemen konten
+- **RESTful API** untuk interaksi dinamis dengan frontend
+- **Sistem autentikasi** aman dengan proteksi route
+- **Manajemen database** dengan migrations untuk skills dan settings
+
+Informasi lebih lanjut tentang CodeIgniter dapat ditemukan di [situs resmi](https://codeigniter.com).
 
 ---
 
-## 📋 Table of Contents
+## 📋 Daftar Isi
 
-1. [Prerequisites](#-prerequisites)
-2. [Installation](#-installation)
-3. [Configuration](#-configuration)
-4. [Running the Application](#-running-the-application)
-5. [Features](#-features)
-6. [Project Structure](#-project-structure)
+1. [Prasyarat](#-prasyarat)
+2. [Instalasi](#-instalasi)
+3. [Konfigurasi](#-konfigurasi)
+4. [Menjalankan Aplikasi](#-menjalankan-aplikasi)
+5. [Fitur Utama](#-fitur-utama)
+6. [Struktur Proyek](#-struktur-proyek)
 7. [Testing](#-testing)
-8. [Security](#-security)
+8. [Keamanan](#-keamanan)
 9. [Troubleshooting](#-troubleshooting)
 10. [Deployment](#-deployment)
 
 ---
 
-## ✅ Prerequisites
+## ✅ Prasyarat
 
-### Required Software
+### Perangkat Lunak yang Diperlukan
 
-- **PHP** 8.2 or higher
-- **Composer** (PHP dependency manager)
-- **Node.js** 18+ and npm (for asset compilation)
-- **MySQL/MariaDB** (optional, for database features)
+- **PHP** 8.2 atau lebih tinggi
+- **Composer** (dependency manager PHP)
+- **Node.js** 18+ dan npm (untuk kompilasi aset)
+- **MySQL/MariaDB** (opsional, untuk fitur database)
 - **Git** (version control)
 
-### PHP Extensions Required
+### Ekstensi PHP yang Diperlukan
 
-Ensure the following extensions are enabled in your `php.ini`:
+Pastikan ekstensi berikut diaktifkan dalam `php.ini`:
 
 ```ini
 extension=intl
 extension=mbstring
-extension=mysqlnd    ; If using MySQL
-extension=curl       ; For HTTP requests
-extension=json       ; Enabled by default
-extension=fileinfo   ; For file uploads
-extension=gd         ; For image processing
+extension=mysqlnd    ; Jika menggunakan MySQL
+extension=curl       ; Untuk HTTP requests
+extension=json       ; Aktif secara default
+extension=fileinfo   ; Untuk file uploads
+extension=gd         ; Untuk image processing
 ```
 
-### Verify Installation
+### Verifikasi Instalasi
 
 ```bash
-# Check PHP version
+# Cek versi PHP
 php -v
 
-# Check Composer
+# Cek Composer
 composer --version
 
-# Check Node.js
+# Cek Node.js
 node -v
 npm -v
 ```
 
 > [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using PHP below 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+> - Tanggal end-of-life PHP 7.4 adalah 28 November 2022
+> - Tanggal end-of-life PHP 8.0 adalah 26 November 2023
+> - Tanggal end-of-life PHP 8.1 adalah 31 Desember 2025
+> - Segera upgrade jika masih menggunakan PHP di bawah 8.2
+> - Tanggal end-of-life PHP 8.2 adalah 31 Desember 2026
 
 ---
 
-## 📦 Installation
+## 📦 Instalasi
 
-### Step 1: Clone or Navigate to Project
+### Langkah 1: Clone atau Navigasi ke Project
 
 ```bash
 git clone https://github.com/enigmaaura404/enigmatic-aura.git && cd enigmatic_aura
 ```
 
-### Step 2: Install PHP Dependencies
+### Langkah 2: Install Dependensi PHP
 
 ```bash
 composer install
 ```
 
-This will install all required PHP packages including CodeIgniter 4 framework.
+Ini akan menginstall semua package PHP yang diperlukan termasuk framework CodeIgniter 4.
 
-### Step 3: Install Node.js Dependencies
+### Langkah 3: Install Dependensi Node.js
 
 ```bash
 npm install
 ```
 
-This installs Tailwind CSS and other frontend dependencies.
+Ini akan menginstall Tailwind CSS dan dependensi frontend lainnya.
 
-### Step 4: Environment Configuration
+### Langkah 4: Konfigurasi Environment
 
 ```bash
-# Copy the example environment file
+# Copy file environment example
 cp env .env
 
-# Generate encryption key (important for security)
+# Generate encryption key (penting untuk keamanan)
 php spark key:generate
 ```
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Konfigurasi
 
-### Configure `.env` File
+### Konfigurasi File `.env`
 
-Edit the `.env` file with your settings:
+Edit file `.env` dengan pengaturan Anda:
 
 ```bash
 nano .env
 ```
 
-#### Essential Configuration
+#### Konfigurasi Esensial
 
 ```env
 # --------------------------------------------------------------------
-# APP SETTINGS
+# PENGATURAN APLIKASI
 # --------------------------------------------------------------------
 CI_ENVIRONMENT = development
 app.baseURL = 'http://localhost:8080/'
 
 # --------------------------------------------------------------------
-# DATABASE (Optional - for production features)
+# DATABASE (Opsional - untuk fitur production)
 # --------------------------------------------------------------------
 database.default.hostname = localhost
 database.default.database = enigmatic_aura
 database.default.username = root
 database.default.password = your_password_here
 database.default.DBDriver = MySQLi
-database.default.DBPrefix =
+database.default.DBPrefix = 
 database.default.port = 3306
 
 # --------------------------------------------------------------------
@@ -157,7 +159,7 @@ session.timeToUpdate = 300
 session.regenerateDestroy = false
 
 # --------------------------------------------------------------------
-# EMAIL (For password reset notifications)
+# EMAIL (Untuk notifikasi password reset)
 # --------------------------------------------------------------------
 email.from = "noreply@yourdomain.com"
 email.fromName = "EnigmaticAura"
@@ -172,27 +174,27 @@ email.charset = utf-8
 email.newline = \r\n
 ```
 
-### Set Directory Permissions
+### Set Permission Direktori
 
 ```bash
-# Make writable directories accessible
+# Buat direktori writable dapat diakses
 chmod -R 777 writable/
 chmod -R 755 public/
 ```
 
-### Compile Assets (Optional)
+### Kompilasi Assets (Opsional)
 
 ```bash
 # Build Tailwind CSS
 npm run build
 
-# Or watch for changes during development
+# Atau watch untuk perubahan selama development
 npm run dev
 ```
 
 ---
 
-## 🏃 Running the Application
+## 🏃 Menjalankan Aplikasi
 
 ### Development Server
 
@@ -201,77 +203,91 @@ npm run dev
 php spark serve
 ```
 
-Access the application at:
+Akses aplikasi di:
 - **Landing Page**: http://localhost:8080
 - **Admin Login**: http://localhost:8080/auth/login
 - **API Health Check**: http://localhost:8080/health
 
-### Alternative: Using Built-in PHP Server
+### Alternatif: Menggunakan Built-in PHP Server
 
 ```bash
-# From public directory
+# Dari direktori public
 cd public
 php -S localhost:8080
 ```
 
 ---
 
-## ✨ Features
+## ✨ Fitur Utama
 
-### 🌐 Public Landing Page
+### 🌐 Landing Page Publik
 
-| Feature | Description |
-|---------|-------------|
-| Hero Section | Animated introduction with CTA |
-| About Section | Personal/professional bio |
-| Skills Section | Tech stack display with proficiency |
-| Projects Section | Portfolio showcase |
-| Contact Form | AJAX submission with validation |
-| Dark/Light Mode | Theme toggle with persistence |
-| Responsive Design | Mobile-first approach |
-| Accessibility | ARIA labels, keyboard navigation |
+| Fitur | Deskripsi |
+|-------|-----------|
+| Hero Section | Introduksi animasi dengan CTA |
+| About Section | Bio personal/profesional |
+| Skills Section | Tampilan tech stack dengan tingkat kemahiran |
+| Projects Section | Showcase portfolio |
+| Contact Form | Submit AJAX dengan validasi |
+| Dark/Light Mode | Toggle tema dengan persistensi |
+| Responsive Design | Pendekatan mobile-first |
+| Accessibility | Label ARIA, navigasi keyboard |
 
-### 🔐 Admin Dashboard (TailAdmin Architecture)
+### 🔐 Admin Dashboard (Arsitektur TailAdmin)
 
-| Module | Features |
-|--------|----------|
-| Dashboard | Analytics, stats cards, recent activity |
-| Projects | Full CRUD operations, publish/unpublish |
-| Skills | Add, edit, delete skills with categories |
-| Content | Edit landing page content dynamically |
-| Profile | Update admin profile, change password |
-| Logout | Secure session termination |
+| Modul | Fitur |
+|-------|-------|
+| **Dashboard** | Analytics, stat cards, aktivitas terbaru |
+| **Projects** | CRUD lengkap, publish/unpublish, bulk delete |
+| **Skills** | Tambah, edit, hapus skills dengan kategori |
+| **Settings** | Manajemen pengaturan aplikasi dengan pagination & search |
+| **About** | Editor konten halaman about |
+| **Focus** | Manajemen focus areas |
+| **Messages** | Inbox pesan dari contact form dengan mark as read |
+| **Profile** | Update profil admin, ganti password |
+| **Logout** | Terminasi sesi aman |
 
 ### 📡 API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
+| Endpoint | Method | Deskripsi |
+|----------|--------|-----------|
 | `/api/contact/send` | POST | Submit contact form |
-| `/api/projects/list` | GET | Retrieve projects list |
-| `/api/skills/list` | GET | Retrieve skills list |
-| `/api/theme/preference` | POST | Save theme preference |
+| `/api/projects/list` | GET | Retrieve daftar projects |
+| `/api/skills/list` | GET | Retrieve daftar skills |
+| `/api/theme/preference` | POST | Simpan preferensi tema |
 | `/health` | GET | Health check endpoint |
+
+### 💾 Database Features
+
+- **Migrations**: Script migrasi untuk tabel skills dan settings
+- **Models**: SkillModel dan SettingModel dengan validasi lengkap
+- **Soft Deletes**: Support untuk soft deletes pada model
+- **Timestamps**: Auto-managed created_at dan updated_at
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Struktur Proyek
 
 ```
 /workspace
 │
 ├── app/
 │   ├── Config/
-│   │   ├── Routes.php          # Main routing configuration
-│   │   ├── Filters.php         # Auth filter registration
-│   │   ├── App.php             # Application config
-│   │   └── Database.php        # Database configuration
+│   │   ├── Routes.php          # Konfigurasi routing utama
+│   │   ├── Filters.php         # Registrasi filter auth
+│   │   ├── App.php             # Konfigurasi aplikasi
+│   │   └── Database.php        # Konfigurasi database
 │   │
 │   ├── Controllers/
-│   │   ├── Admin/              # Admin panel controllers
+│   │   ├── Admin/              # Controller admin panel
 │   │   │   ├── Dashboard.php
 │   │   │   ├── ProjectController.php
 │   │   │   ├── SkillController.php
+│   │   │   ├── SettingController.php
 │   │   │   ├── ContentController.php
+│   │   │   ├── AboutController.php
+│   │   │   ├── FocusController.php
+│   │   │   ├── MessageController.php
 │   │   │   └── AuthController.php
 │   │   │
 │   │   ├── Api/                # API endpoints
@@ -280,7 +296,7 @@ php -S localhost:8080
 │   │   │   ├── SkillController.php
 │   │   │   └── ThemeController.php
 │   │   │
-│   │   ├── Auth/               # Authentication controllers
+│   │   ├── Auth/               # Controller autentikasi
 │   │   │   ├── LoginController.php
 │   │   │   └── ForgotPasswordController.php
 │   │   │
@@ -289,39 +305,68 @@ php -S localhost:8080
 │   │   └── Landing.php
 │   │
 │   ├── Filters/
-│   │   └── AuthFilter.php      # Route protection filter
+│   │   └── AuthFilter.php      # Filter proteksi route
 │   │
-│   ├── Models/                 # Database models (ready for implementation)
+│   ├── Models/                 # Model database
+│   │   ├── SkillModel.php      # Model untuk skills
+│   │   └── SettingModel.php    # Model untuk settings
 │   │
 │   ├── Views/
-│   │   ├── auth/               # Login & auth views
+│   │   ├── auth/               # View login & auth
 │   │   │   └── login.php
-│   │   ├── dashboard/          # Admin dashboard views
-│   │   │   ├── index.php
-│   │   │   ├── projects.php
-│   │   │   └── layout.php
-│   │   ├── landing/            # Landing page views
+│   │   ├── dashboard/          # View admin dashboard
+│   │   │   ├── index.php       # Dashboard home
+│   │   │   ├── analytics.php   # Analytics page
+│   │   │   ├── projects.php    # Project management
+│   │   │   ├── skills.php      # Skills management
+│   │   │   ├── skills_form.php # Form skills
+│   │   │   ├── layout.php      # Dashboard layout
+│   │   │   ├── about/          # About management views
+│   │   │   ├── focus/          # Focus management views
+│   │   │   ├── messages/       # Messages inbox views
+│   │   │   └── settings/       # Settings management views
+│   │   ├── landing/            # View landing page
 │   │   │   └── index.php
 │   │   ├── layouts/            # Template layouts
-│   │   │   ├── index.php
-│   │   │   ├── landing.php
-│   │   │   └── dashboard.php
-│   │   └── partials/           # Reusable components
+│   │   │   ├── index.php       # Main layout
+│   │   │   ├── landing.php     # Landing layout
+│   │   │   └── dashboard.php   # Dashboard layout
+│   │   └── partials/           # Komponen reusable
 │   │       ├── header.php
 │   │       ├── navbar.php
 │   │       └── footer.php
 │   │
-│   └── Helpers/                # Custom helper functions
+│   ├── Database/
+│   │   ├── Migrations/         # Migration files
+│   │   │   ├── 2024-01-17-000001_CreateSkillsTable.php
+│   │   │   └── 2024-01-18-000002_CreateSettingsTable.php
+│   │   └── Seeds/              # Seeder files
+│   │
+│   ├── Helpers/                # Custom helper functions
+│   ├── Libraries/              # Custom libraries
+│   └── Language/               # Localization files
 │
 ├── public/
-│   ├── index.php               # Entry point
+│   ├── index.php               # Entry point aplikasi
+│   ├── .htaccess               # Apache rewrite rules
+│   ├── robots.txt              # SEO robots file
+│   ├── favicon.ico             # Site favicon
 │   └── assets/
 │       ├── css/
 │       │   └── style.css       # Compiled Tailwind CSS
 │       └── js/
 │           └── app.js          # Frontend JavaScript
 │
+├── resources/
+│   ├── css/
+│   │   └── input.css           # Tailwind source file
+│   └── node_modules/           # Node dependencies
+│
 ├── tests/                      # PHPUnit test files
+│   ├── unit/                   # Unit tests
+│   ├── session/                # Session tests
+│   ├── database/               # Database tests
+│   └── _support/               # Test support files
 │
 ├── writable/
 │   ├── cache/                  # Cache storage
@@ -329,51 +374,55 @@ php -S localhost:8080
 │   ├── session/                # Session files
 │   └── uploads/                # Uploaded files
 │
+├── vendor/                     # Composer dependencies
+├── node_modules/               # Node.js dependencies
 ├── .env                        # Environment configuration
 ├── composer.json               # PHP dependencies
 ├── package.json                # Node.js dependencies
-└── spark                       # CodeIgniter CLI tool
+├── tailwind.config.js          # Tailwind CSS configuration
+├── spark                       # CodeIgniter CLI tool
+└── LICENSE                     # MIT License
 ```
 
 ---
 
-## 🔑 Demo Credentials
+## 🔑 Kredensial Demo
 
-**Admin Login:**
+**Login Admin:**
 - Email: `admin@example.com`
 - Password: `admin123`
 
-> ⚠️ **Important**: Change these credentials before deploying to production!
+> ⚠️ **Penting**: Ganti kredensial ini sebelum deploy ke production!
 
 ---
 
 ## 🧪 Testing
 
-### Landing Page Tests
+### Testing Landing Page
 
-- [ ] Hero section displays correctly on all devices
-- [ ] Dark/light mode toggle works and persists
-- [ ] Smooth scroll navigation to sections
-- [ ] Contact form submits with AJAX
-- [ ] Toast notifications appear on form submit
-- [ ] Mobile menu opens/closes properly
-- [ ] All links navigate correctly
-- [ ] Images load properly
-- [ ] No console errors in browser
+- [ ] Hero section tampil dengan baik di semua device
+- [ ] Toggle dark/light mode berfungsi dan persist
+- [ ] Smooth scroll navigation ke sections
+- [ ] Contact form submit dengan AJAX
+- [ ] Toast notifications muncul saat form submit
+- [ ] Mobile menu buka/tutup dengan benar
+- [ ] Semua link navigasi dengan benar
+- [ ] Images load dengan baik
+- [ ] Tidak ada console errors di browser
 
-### Admin Panel Tests
+### Testing Admin Panel
 
-- [ ] Login page accessible at `/auth/login`
-- [ ] Login with demo credentials succeeds
-- [ ] Redirect to dashboard after login
-- [ ] Stats cards display data
-- [ ] Sidebar navigation works
-- [ ] Protected routes redirect to login when not authenticated
-- [ ] Logout clears session and redirects
-- [ ] Profile update form works
-- [ ] CSRF token validation working
+- [ ] Login page accessible di `/auth/login`
+- [ ] Login dengan demo credentials berhasil
+- [ ] Redirect ke dashboard setelah login
+- [ ] Stats cards menampilkan data
+- [ ] Sidebar navigation berfungsi
+- [ ] Protected routes redirect ke login saat tidak authenticated
+- [ ] Logout clear session dan redirect
+- [ ] Profile update form berfungsi
+- [ ] CSRF token validation berjalan
 
-### API Tests
+### Testing API
 
 ```bash
 # Test projects API
@@ -386,36 +435,53 @@ curl http://localhost:8080/api/skills/list
 curl http://localhost:8080/health
 ```
 
-- [ ] `GET /api/projects/list` returns valid JSON
-- [ ] `GET /api/skills/list` returns valid JSON
-- [ ] `POST /api/contact/send` accepts form data
-- [ ] `GET /health` returns status OK
+- [ ] `GET /api/projects/list` mengembalikan JSON valid
+- [ ] `GET /api/skills/list` mengembalikan JSON valid
+- [ ] `POST /api/contact/send` menerima form data
+- [ ] `GET /health` mengembalikan status OK
 
-### Security Tests
+### Testing Database
 
-- [ ] CSRF protection enabled on forms
-- [ ] XSS prevention working (output escaped)
-- [ ] Auth filter protects admin routes
+```bash
+# Jalankan migrations
+php spark migrate
+
+# Cek status migrations
+php spark migrate:status
+```
+
+- [ ] Migrations berjalan tanpa error
+- [ ] Tabel skills dibuat dengan benar
+- [ ] Tabel settings dibuat dengan benar
+- [ ] Model validation berfungsi
+
+### Testing Keamanan
+
+- [ ] CSRF protection aktif pada forms
+- [ ] XSS prevention berjalan (output escaped)
+- [ ] Auth filter melindungi admin routes
 - [ ] SQL injection prevention (prepared statements)
 - [ ] Auto-routing disabled
 
 ---
 
-## 🔒 Security Features
+## 🔒 Fitur Keamanan
 
-1. **CSRF Protection** - Enabled on sensitive routes
-2. **XSS Prevention** - Using `esc()` for all user output
-3. **Auth Filter** - Protects all `/admin` routes
-4. **Input Validation** - Server-side validation in controllers
-5. **Auto-routing Disabled** - Explicit route definitions only
+1. **CSRF Protection** - Diaktifkan pada route sensitif
+2. **XSS Prevention** - Menggunakan `esc()` untuk semua output user
+3. **Auth Filter** - Melindungi semua route `/admin`
+4. **Input Validation** - Validasi server-side di controllers
+5. **Auto-routing Disabled** - Hanya route definitions eksplisit
+6. **Secure Headers** - Headers keamanan tambahan
+7. **Session Security** - File-based session handler dengan cookie protection
 
 ---
 
 ## 🔧 Troubleshooting
 
-### Common Issues
+### Masalah Umum
 
-#### 1. "Class not found" Error
+#### 1. Error "Class not found"
 
 ```bash
 # Clear autoloader cache
@@ -428,15 +494,15 @@ php spark cache:clear
 #### 2. Permission Denied Errors
 
 ```bash
-# Fix writable directory permissions
+# Fix permission direktori writable
 chmod -R 777 writable/
-chown -R www-data:www-data writable/  # On Linux with Apache/Nginx
+chown -R www-data:www-data writable/  # Di Linux dengan Apache/Nginx
 ```
 
-#### 3. Database Connection Failed
+#### 3. Koneksi Database Gagal
 
 ```env
-# Verify .env settings
+# Verifikasi pengaturan .env
 database.default.hostname = localhost
 database.default.database = your_database
 database.default.username = your_username
@@ -445,28 +511,28 @@ database.default.DBDriver = MySQLi
 ```
 
 ```bash
-# Test database connection
+# Test koneksi database
 php spark db:test
 ```
 
-#### 4. Assets Not Loading
+#### 4. Assets Tidak Load
 
 ```bash
 # Rebuild assets
 npm install
 npm run build
 
-# Check base URL in .env
+# Cek base URL di .env
 app.baseURL = 'http://localhost:8080/'
 ```
 
-#### 5. Session Issues
+#### 5. Masalah Session
 
 ```bash
-# Ensure session directory is writable
+# Pastikan direktori session writable
 chmod -R 777 writable/session/
 
-# Clear session files
+# Clear file session
 rm -rf writable/session/*
 ```
 
@@ -476,50 +542,63 @@ rm -rf writable/session/*
 # Clear route cache
 php spark routes:clear
 
-# List all registered routes
+# List semua registered routes
 php spark routes
+```
+
+#### 7. Migration Issues
+
+```bash
+# Rollback migrations
+php spark migrate:rollback
+
+# Re-run migrations
+php spark migrate
+
+# Fresh migration (drop & recreate all tables)
+php spark migrate:fresh
 ```
 
 ### Debug Mode
 
-Enable debug mode in `.env`:
+Aktifkan debug mode di `.env`:
 
 ```env
 CI_ENVIRONMENT = development
 ```
 
-Check logs at:
+Cek logs di:
 - `writable/logs/log-YYYY-MM-DD.php`
 
 ---
 
 ## 🚀 Deployment
 
-### Production Checklist
+### Checklist Production
 
-- [ ] Change `CI_ENVIRONMENT` to `production`
-- [ ] Update `app.baseURL` to your domain
-- [ ] Change demo admin credentials
-- [ ] Enable HTTPS
-- [ ] Set proper file permissions
-- [ ] Configure database for production
-- [ ] Enable caching
+- [ ] Ubah `CI_ENVIRONMENT` ke `production`
+- [ ] Update `app.baseURL` ke domain Anda
+- [ ] Ganti demo admin credentials
+- [ ] Aktifkan HTTPS
+- [ ] Set permission file yang tepat
+- [ ] Konfigurasi database untuk production
+- [ ] Aktifkan caching
 - [ ] Minify CSS/JS assets
-- [ ] Set up error logging
-- [ ] Configure email for password resets
-- [ ] Set up backup strategy
+- [ ] Setup error logging
+- [ ] Konfigurasi email untuk password resets
+- [ ] Setup backup strategy
 
-### Production .env Settings
+### Pengaturan .env Production
 
 ```env
 CI_ENVIRONMENT = production
 app.baseURL = 'https://yourdomain.com/'
 
 # Enable caching
-cache.handler = Redis  # or File
+cache.handler = Redis  # atau File
 
-# Optimize for production
-logger.threshold = 3  # Only log errors and above
+# Optimize untuk production
+logger.threshold = 3  # Hanya log errors dan above
 ```
 
 ### Build Optimized Assets
@@ -529,17 +608,17 @@ logger.threshold = 3  # Only log errors and above
 NODE_ENV=production npm run build
 ```
 
-### Deploy to VPS/Server
+### Deploy ke VPS/Server
 
-1. Upload files via FTP/SFTP or Git
-2. Run `composer install --no-dev`
-3. Configure web server (Apache/Nginx)
-4. Point document root to `public/` folder
-5. Set up SSL certificate
-6. Configure database
-7. Run migrations if needed
+1. Upload files via FTP/SFTP atau Git
+2. Jalankan `composer install --no-dev`
+3. Konfigurasi web server (Apache/Nginx)
+4. Point document root ke folder `public/`
+5. Setup SSL certificate
+6. Konfigurasi database
+7. Jalankan migrations jika diperlukan
 
-### Apache Configuration
+### Konfigurasi Apache
 
 ```apache
 <VirtualHost *:443>
@@ -558,7 +637,7 @@ NODE_ENV=production npm run build
 </VirtualHost>
 ```
 
-### Nginx Configuration
+### Konfigurasi Nginx
 
 ```nginx
 server {
@@ -587,69 +666,91 @@ server {
 }
 ```
 
----
+### Running Migrations di Production
 
-## 🎨 Future Improvements
+```bash
+# Jalankan semua migrations
+php spark migrate
 
-- [ ] Database Integration - Replace hardcoded data with Models
-- [ ] Image Upload - Project thumbnails upload functionality
-- [ ] Rich Text Editor - For content management
-- [ ] Chart Integration - ApexCharts/Chart.js for analytics
-- [ ] Real Authentication - Password hashing with `password_hash()`
-- [ ] Role-based Access - Admin vs Editor permissions
-- [ ] API Rate Limiting - Throttle filter for API endpoints
-- [ ] Caching - Redis/Memcached for performance
+# Cek status
+php spark migrate:status
+```
 
 ---
 
-## 📚 Documentation
+## 🎨 Peningkatan Masa Depan
+
+- [ ] Image Upload - Upload thumbnail projects
+- [ ] Rich Text Editor - Untuk content management
+- [ ] Chart Integration - ApexCharts/Chart.js untuk analytics
+- [ ] Real Authentication - Password hashing dengan `password_hash()`
+- [ ] Role-based Access - Permission Admin vs Editor
+- [ ] API Rate Limiting - Throttle filter untuk API endpoints
+- [ ] Advanced Caching - Redis/Memcached untuk performa
+- [ ] Multi-language Support - Localization dengan i18n
+- [ ] Backup System - Automated database backup
+- [ ] Analytics Integration - Google Analytics atau alternatif
+
+---
+
+## 📚 Dokumentasi
 
 - [CodeIgniter 4 User Guide](https://codeigniter.com/user_guide/)
 - [TailAdmin Documentation](https://tailadmin.com/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Composer Documentation](https://getcomposer.org/doc/)
 - [PHP Documentation](https://www.php.net/docs.php)
+- [MySQL Documentation](https://dev.mysql.com/doc/)
 
 ---
 
-## 🆘 Getting Help
+## 🆘 Mendapatkan Bantuan
 
-If you encounter issues:
+Jika Anda mengalami masalah:
 
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Review `writable/logs/` for error messages
-3. Enable debug mode in `.env`
-4. Check browser console for JavaScript errors
-5. Verify all prerequisites are installed
+1. Cek bagian [Troubleshooting](#-troubleshooting)
+2. Review `writable/logs/` untuk error messages
+3. Aktifkan debug mode di `.env`
+4. Cek browser console untuk JavaScript errors
+5. Verifikasi semua prasyarat terinstall
+6. Periksa dokumentasi CodeIgniter 4
 
 ---
 
 ## 📄 License
 
-This project is open-source and available under the MIT License.
+Proyek ini open-source dan tersedia di bawah **MIT License**.
 
 ---
 
-## ✅ Current Status: READY FOR PRODUCTION
+## ✅ Status Saat Ini: READY FOR PRODUCTION
 
-The EnigmaticAura system is now fully configured and ready for use:
+Sistem EnigmaticAura telah sepenuhnya dikonfigurasi dan siap digunakan:
 
-- ✅ All controllers implemented
-- ✅ Routing structure complete
-- ✅ Authentication system functional
-- ✅ API endpoints operational
-- ✅ Security measures in place
+- ✅ Semua controllers terimplementasi
+- ✅ Struktur routing lengkap
+- ✅ Sistem autentikasi fungsional
+- ✅ API endpoints operasional
+- ✅ Database models dengan validasi
+- ✅ Migrations untuk database schema
+- ✅ Security measures diterapkan
 - ✅ Responsive design tested
 - ✅ Accessibility improvements applied
+- ✅ Admin dashboard dengan CRUD lengkap
+- ✅ Settings management dengan pagination
+- ✅ Messages inbox system
 
-**Next Steps:**
-1. Complete database integration with Models
-2. Add image upload functionality
-3. Implement rich text editor for content management
-4. Add analytics charts to dashboard
-5. Set up production environment
+**Langkah Selanjutnya:**
+1. Tambahkan functionality upload gambar untuk projects
+2. Implementasi rich text editor untuk content management
+3. Tambahkan analytics charts ke dashboard
+4. Setup production environment dengan SSL
+5. Implementasi backup system otomatis
+6. Tambahkan multi-language support
 
 ---
 
-*Last Updated: April 2025*
-*Version: 1.0.0*
+*Terakhir Diperbarui: April 2025*  
+*Versi: 1.0.0*  
+*Framework: CodeIgniter 4.7+*  
+*PHP Required: 8.2+*
