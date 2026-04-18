@@ -153,3 +153,13 @@ $routes->set404Override(function() {
 // Cache routes for faster boot time in production
 // Uncomment below when deploying:
 // $routes->cacheConfig('routes');
+// Additional Admin Routes for About, Focus, Messages
+$routes->get('admin/about', 'Admin\AboutController::index', ['as' => 'admin.about']);
+$routes->post('admin/about/update', 'Admin\AboutController::update', ['as' => 'admin.about.update']);
+
+$routes->get('admin/focus', 'Admin\FocusController::index', ['as' => 'admin.focus']);
+
+$routes->get('admin/messages', 'Admin\MessageController::index', ['as' => 'admin.messages']);
+$routes->post('admin/messages/(:num)/read', 'Admin\MessageController::markAsRead/$1', ['as' => 'admin.messages.read']);
+$routes->post('admin/messages/mark-all-read', 'Admin\MessageController::markAllAsRead', ['as' => 'admin.messages.markAllRead']);
+$routes->delete('admin/messages/(:num)', 'Admin\MessageController::delete/$1', ['as' => 'admin.messages.delete']);
