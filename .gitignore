@@ -1,3 +1,5 @@
 ```
-writable/cache/
+# Logs
+*.log
+writable/logs/
 ```

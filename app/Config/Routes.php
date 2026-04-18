@@ -136,7 +136,7 @@ $routes->group('auth', ['namespace' => 'App\Controllers\Auth'], function($routes
 // =============================================================================
 
 // Health Check (For VPS/Deploy monitoring)
-$routes->get('health', fn() => response()->setJSON(['status' => 'ok', 'timestamp' => time()]), ['filter' => 'throttle:60,1']);
+$routes->get('health', fn() => response()->setJSON(['status' => 'ok', 'timestamp' => time()]));
 
 // Sitemap & Robots (SEO)
 $routes->get('sitemap.xml', 'SeoController::sitemap');
