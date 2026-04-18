@@ -82,9 +82,12 @@ $routes->group('admin', ['filter' => 'auth', 'namespace' => 'App\Controllers\Adm
     // ─────────────────────────────────────────────────────────────────────
     $routes->resource('skills', [
         'controller' => 'SkillController',
-        'only'       => ['index', 'create', 'update', 'delete'],
+        'only'       => ['index', 'create', 'edit', 'update', 'delete'],
         'placeholder' => '(:num)'
     ]);
+
+    // Custom Skill Actions
+    $routes->post('skills/(:num)/toggle-status', 'SkillController::toggleStatus/$1', ['as' => 'admin.skills.toggle']);
     
     // ─────────────────────────────────────────────────────────────────────
     // 📝 Content Management (Landing Page Editor)

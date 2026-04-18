@@ -36,9 +36,10 @@
         <?php if(uri_string() === 'admin/projects'): ?><span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span><?php endif; ?>
       </a>
       
-      <a href="#" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all">
+      <a href="/admin/skills" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl <?= uri_string() === 'admin/skills' ? 'bg-gradient-to-r from-brand-500/10 to-brand-500/5 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50' ?> transition-all">
         <span class="text-lg">⚙️</span>
         <span class="font-medium">Skills</span>
+        <?php if(uri_string() === 'admin/skills'): ?><span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span><?php endif; ?>
       </a>
       
       <a href="#" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all">
