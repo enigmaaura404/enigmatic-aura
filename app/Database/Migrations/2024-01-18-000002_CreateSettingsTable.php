@@ -70,7 +70,7 @@ class CreateSettingsTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addKey('key');
+        // 'key' already has unique constraint above, no need to add again
         $this->forge->addKey('category');
         $this->forge->addKey('is_active');
 
