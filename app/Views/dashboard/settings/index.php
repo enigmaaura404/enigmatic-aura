@@ -3,6 +3,467 @@
 
 <div class="space-y-6">
     <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><?= esc($title ?? 'Settings') ?></h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your account settings and preferences</p>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <?php if (session()->getFlashdata('success')): ?>
+        <div id="flash-success" class="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-400 animate-fade-up">
+            <span class="text-xl">✓</span>
+            <span><?= esc(session()->getFlashdata('success')) ?></span>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-green-500 hover:text-green-700">×</button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+        <div id="flash-error" class="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-700 dark:text-red-400 animate-fade-up">
+            <span class="text-xl">⚠</span>
+            <span><?= esc(session()->getFlashdata('error')) ?></span>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-red-500 hover:text-red-700">×</button>
+        </div>
+    <?php endif; ?>
+
+    <!-- Settings Navigation Tabs -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div class="border-b border-gray-200 dark:border-gray-700">
+            <nav class="flex overflow-x-auto" aria-label="Settings tabs">
+                <button onclick="switchTab('profile')" data-tab="profile" class="tab-button active px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-blue-500 text-blue-600 dark:text-blue-400 transition-all">
+                    👤 Profile Information
+                </button>
+                <button onclick="switchTab('security')" data-tab="security" class="tab-button px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all">
+                    🔐 Security & Password
+                </button>
+                <button onclick="switchTab('recovery')" data-tab="recovery" class="tab-button px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all">
+                    📧 Recovery Options
+                </button>
+                <button onclick="switchTab('2fa')" data-tab="2fa" class="tab-button px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all">
+                    🛡️ Two-Factor Auth
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6">
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="tab-content space-y-6">
+                <div class="flex items-center gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                        <?= strtoupper(substr($user['name'] ?? 'A', 0, 1)) ?>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white"><?= esc($user['name'] ?? 'Admin User') ?></h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400"><?= esc($user['email'] ?? 'admin@example.com') ?></p>
+                        <button class="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium">Change Avatar</button>
+                    </div>
+                </div>
+
+                <form action="/admin/settings/profile" method="POST" class="space-y-5">
+                    <?= csrf_field() ?>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="profile-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="name" id="profile-name" value="<?= esc($user['name'] ?? '') ?>" required
+                                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                                   placeholder="Your full name">
+                        </div>
+                        <div>
+                            <label for="profile-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Email Address <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" name="email" id="profile-email" value="<?= esc($user['email'] ?? '') ?>" required
+                                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                                   placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="profile-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            📱 Phone Number
+                        </label>
+                        <input type="tel" name="phone" id="profile-phone" value="<?= esc($user['phone'] ?? '') ?>"
+                               class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                               placeholder="+1 (555) 123-4567">
+                        <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Optional. Used for account recovery.</p>
+                    </div>
+                    <div>
+                        <label for="profile-bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            📝 Bio / About
+                        </label>
+                        <textarea name="bio" id="profile-bio" rows="4" maxlength="500"
+                                  class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none placeholder-gray-400"
+                                  placeholder="Tell us a bit about yourself..."><?= esc($user['bio'] ?? '') ?></textarea>
+                        <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400 text-right"><span id="bio-count">0</span>/500 characters</p>
+                    </div>
+                    <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                            💾 Save Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="security-tab" class="tab-content hidden space-y-6">
+                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                    <div class="flex items-start gap-3">
+                        <span class="text-xl">🔒</span>
+                        <div>
+                            <h4 class="text-sm font-semibold text-blue-800 dark:text-blue-300">Password Requirements</h4>
+                            <ul class="mt-2 text-xs text-blue-700 dark:text-blue-400 space-y-1">
+                                <li>• At least 8 characters long</li>
+                                <li>• Include uppercase and lowercase letters</li>
+                                <li>• Include at least one number</li>
+                                <li>• Include at least one special character</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/admin/settings/password" method="POST" class="space-y-5">
+                    <?= csrf_field() ?>
+                    <div>
+                        <label for="current-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Current Password <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="password" name="current_password" id="current-password" required
+                                   class="w-full px-4 py-2.5 pr-12 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                                   placeholder="Enter current password">
+                            <button type="button" onclick="togglePassword('current-password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="new-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                New Password <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="new_password" id="new-password" required minlength="8"
+                                       oninput="checkPasswordStrength(this.value)"
+                                       class="w-full px-4 py-2.5 pr-12 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                                       placeholder="Enter new password">
+                                <button type="button" onclick="togglePassword('new-password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                    👁️
+                                </button>
+                            </div>
+                            <div id="password-strength" class="mt-2 hidden">
+                                <div class="flex gap-1 h-1.5 mb-1">
+                                    <div class="strength-bar flex-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                                    <div class="strength-bar flex-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                                    <div class="strength-bar flex-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                                    <div class="strength-bar flex-1 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                                </div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400" id="strength-text">Password strength: <span class="font-medium">-</span></p>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Confirm Password <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password" name="confirm_password" id="confirm-password" required minlength="8"
+                                       class="w-full px-4 py-2.5 pr-12 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                                       placeholder="Confirm new password">
+                                <button type="button" onclick="togglePassword('confirm-password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                    👁️
+                                </button>
+                            </div>
+                            <p id="password-match" class="mt-1.5 text-xs hidden"></p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                            🔐 Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Recovery Tab -->
+            <div id="recovery-tab" class="tab-content hidden space-y-6">
+                <div class="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+                    <div class="flex items-start gap-3">
+                        <span class="text-xl">📧</span>
+                        <div>
+                            <h4 class="text-sm font-semibold text-amber-800 dark:text-amber-300">Recovery Email</h4>
+                            <p class="mt-1 text-xs text-amber-700 dark:text-amber-400">Add a backup email address to recover your account if you lose access to your primary email.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/admin/settings/recovery" method="POST" class="space-y-5">
+                    <?= csrf_field() ?>
+                    <div>
+                        <label for="recovery-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            📧 Recovery Email Address
+                        </label>
+                        <input type="email" name="recovery_email" id="recovery-email" value="<?= esc($user['recovery_email'] ?? '') ?>"
+                               class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                               placeholder="backup@email.com">
+                        <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">We'll send a verification code to this email.</p>
+                    </div>
+                    <div id="verification-section" class="hidden">
+                        <label for="verification-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            🔢 Verification Code
+                        </label>
+                        <div class="flex gap-3">
+                            <input type="text" name="verification_code" id="verification-code" maxlength="6"
+                                   class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg tracking-widest"
+                                   placeholder="000000">
+                            <button type="button" onclick="sendVerificationCode()" class="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                Send Code
+                            </button>
+                        </div>
+                        <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Code expires in 10 minutes.</p>
+                    </div>
+                    <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-105">
+                            💾 Save Recovery Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2FA Tab -->
+            <div id="2fa-tab" class="tab-content hidden space-y-6">
+                <div class="p-5 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">🛡️</span>
+                        <div>
+                            <h4 class="text-base font-bold text-green-800 dark:text-green-300">Two-Factor Authentication</h4>
+                            <p class="mt-1 text-sm text-green-700 dark:text-green-400">Add an extra layer of security to your account. Even if someone knows your password, they won't be able to access your account without the 2FA code.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 flex items-center justify-center text-2xl">
+                                📱
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Authenticator App</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Use Google Authenticator, Authy, or similar apps</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="2fa-toggle" class="sr-only peer" onchange="toggle2FA()">
+                            <div class="w-14 h-7 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    
+                    <div id="2fa-setup" class="hidden mt-5 pt-5 border-t border-gray-200 dark:border-gray-700">
+                        <div class="text-center mb-4">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Scan this QR code with your authenticator app</p>
+                            <div class="w-48 h-48 mx-auto bg-white rounded-xl p-2 shadow-lg">
+                                <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-xs">
+                                    [QR Code Placeholder]
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="2fa-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Enter 6-digit code from your app
+                            </label>
+                            <input type="text" name="2fa_code" id="2fa-code" maxlength="6"
+                                   class="w-full max-w-xs mx-auto block px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg tracking-widest"
+                                   placeholder="000000">
+                        </div>
+                        <div class="mt-4 text-center">
+                            <button type="button" onclick="verify2FA()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all">
+                                Verify & Enable 2FA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 flex items-center justify-center text-2xl">
+                                🔑
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Backup Codes</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Download backup codes for emergency access</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="downloadBackupCodes()" class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                            📥 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Tab Switching
+function switchTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // Reset all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active', 'border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+        button.classList.add('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+    });
+    
+    // Show selected tab content
+    document.getElementById(tabName + '-tab').classList.remove('hidden');
+    
+    // Activate selected tab button
+    const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+    activeButton.classList.remove('border-transparent', 'text-gray-500', 'dark:text-gray-400');
+    activeButton.classList.add('active', 'border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+}
+
+// Toggle Password Visibility
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+// Password Strength Checker
+function checkPasswordStrength(password) {
+    const strengthDiv = document.getElementById('password-strength');
+    const bars = strengthDiv.querySelectorAll('.strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    strengthDiv.classList.remove('hidden');
+    
+    const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500'];
+    const texts = ['Weak', 'Fair', 'Good', 'Strong'];
+    
+    bars.forEach((bar, index) => {
+        bar.classList.remove('bg-gray-200', 'dark:bg-gray-700', ...colors);
+        if (index < strength) {
+            bar.classList.add(colors[Math.min(index, 3)]);
+        } else {
+            bar.classList.add('bg-gray-200', 'dark:bg-gray-700');
+        }
+    });
+    
+    strengthText.innerHTML = `Password strength: <span class="font-medium ${strength <= 2 ? 'text-red-500' : 'text-green-500'}">${texts[strength - 1] || '-'}</span>`;
+    
+    // Check password match
+    const confirmPassword = document.getElementById('confirm-password').value;
+    checkPasswordMatch(password, confirmPassword);
+}
+
+// Password Match Checker
+function checkPasswordMatch(password, confirmPassword) {
+    const matchText = document.getElementById('password-match');
+    if (confirmPassword) {
+        matchText.classList.remove('hidden');
+        if (password === confirmPassword) {
+            matchText.textContent = '✓ Passwords match';
+            matchText.className = 'mt-1.5 text-xs text-green-600 dark:text-green-400';
+        } else {
+            matchText.textContent = '✗ Passwords do not match';
+            matchText.className = 'mt-1.5 text-xs text-red-600 dark:text-red-400';
+        }
+    } else {
+        matchText.classList.add('hidden');
+    }
+}
+
+document.getElementById('confirm-password')?.addEventListener('input', function() {
+    const newPassword = document.getElementById('new-password').value;
+    checkPasswordMatch(newPassword, this.value);
+});
+
+// Bio Character Counter
+const bioTextarea = document.getElementById('profile-bio');
+const bioCount = document.getElementById('bio-count');
+if (bioTextarea && bioCount) {
+    bioCount.textContent = bioTextarea.value.length;
+    bioTextarea.addEventListener('input', () => {
+        bioCount.textContent = bioTextarea.value.length;
+    });
+}
+
+// Toggle 2FA Setup
+function toggle2FA() {
+    const toggle = document.getElementById('2fa-toggle');
+    const setupDiv = document.getElementById('2fa-setup');
+    setupDiv.classList.toggle('hidden', !toggle.checked);
+}
+
+// Send Verification Code
+function sendVerificationCode() {
+    showFlashMessage('info', 'Verification code sent to your email!');
+}
+
+// Verify 2FA
+function verify2FA() {
+    showFlashMessage('success', '2FA enabled successfully!');
+}
+
+// Download Backup Codes
+function downloadBackupCodes() {
+    showFlashMessage('info', 'Backup codes downloaded!');
+}
+
+// Show Flash Message
+function showFlashMessage(type, message) {
+    const flashContainer = document.createElement('div');
+    const bgColors = {
+        success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400',
+        error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400',
+        info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
+    };
+    const icons = { success: '✓', error: '⚠', info: 'ℹ' };
+    
+    flashContainer.className = `fixed top-4 right-4 z-50 flex items-center gap-3 p-4 ${bgColors[type]} border rounded-xl shadow-lg animate-fade-up`;
+    flashContainer.innerHTML = `
+        <span class="text-xl">${icons[type]}</span>
+        <span>${message}</span>
+        <button onclick="this.parentElement.remove()" class="ml-auto hover:opacity-70">×</button>
+    `;
+    
+    document.body.appendChild(flashContainer);
+    setTimeout(() => flashContainer.remove(), 5000);
+}
+
+// Auto-hide flash messages
+setTimeout(() => {
+    document.getElementById('flash-success')?.remove();
+    document.getElementById('flash-error')?.remove();
+}, 5000);
+</script>
+
+<style>
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+    animation: fadeUp 0.3s ease-out forwards;
+}
+</style>
+
+<?= $this->endSection() ?>
+
+<div class="space-y-6">
+    <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><?= esc($title) ?></h2>
