@@ -90,6 +90,19 @@ $routes->group('admin', ['filter' => 'auth', 'namespace' => 'App\Controllers\Adm
     $routes->post('skills/(:num)/toggle-status', 'SkillController::toggleStatus/$1', ['as' => 'admin.skills.toggle']);
     
     // ─────────────────────────────────────────────────────────────────────
+    // 🔧 Settings Management (Full CRUD)
+    // ─────────────────────────────────────────────────────────────────────
+    $routes->resource('settings', [
+        'controller' => 'SettingController',
+        'only'       => ['index', 'show', 'create', 'store', 'edit', 'update', 'delete'],
+        'placeholder' => '(:num)'
+    ]);
+
+    // Custom Settings Actions
+    $routes->post('settings/(:num)/toggle-status', 'SettingController::toggleStatus/$1', ['as' => 'admin.settings.toggle']);
+    $routes->post('settings/bulk-delete', 'SettingController::bulkDelete', ['as' => 'admin.settings.bulkDelete']);
+    
+    // ─────────────────────────────────────────────────────────────────────
     // 📝 Content Management (Landing Page Editor)
     // ─────────────────────────────────────────────────────────────────────
     $routes->get('content/landing', 'ContentController::landing', ['as' => 'admin.content.landing']);

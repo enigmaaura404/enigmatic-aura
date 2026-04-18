@@ -49,12 +49,13 @@
       
       <div class="pt-4 pb-2"><p class="px-3 py-2 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Settings</p></div>
       
-      <a href="#" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all">
+      <a href="/admin/settings" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl <?= uri_string() === 'admin/settings' ? 'bg-gradient-to-r from-brand-500/10 to-brand-500/5 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50' ?> transition-all">
         <span class="text-lg">🔧</span>
         <span class="font-medium">Settings</span>
+        <?php if(uri_string() === 'admin/settings'): ?><span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span><?php endif; ?>
       </a>
       
-      <a href="#" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all">
+      <a href="/admin/content/landing" class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all">
         <span class="text-lg">📋</span>
         <span class="font-medium">Content</span>
       </a>
