@@ -1,46 +1,13 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
+# CodeIgniter specific
+writable/cache/
+writable/debugbar/
+writable/logs/
+public/null/
 
-# Dependencies
-vendor/
-composer.lock
+# Session files
+**/ci_session*
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Coverage reports
-coverage/
-htmlcov/
-*.coverage
-
-# Distribution / packaging
-dist/
-build/
-*.tar.gz
-*.zip
-
-# PHP specific
-*.php~
-.htaccess
-
-# Laravel/Symfony style (if applicable)
-storage/
-bootstrap/cache/
 ```
