@@ -1,5 +1,4 @@
 ```
-# Logs
-*.log
-writable/logs/
+# Backup files
+*_backup.php
 ```
