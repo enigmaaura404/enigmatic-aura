@@ -78,14 +78,20 @@
           'red' => 'bg-red-100 dark:bg-red-900/30 text-red-600',
         ];
         foreach($recentActivities as $act): 
+          // Ensure $act is an array and has required keys
+          if (!is_array($act) || !isset($act['color'])) {
+            continue;
+          }
+          $colorKey = is_string($act['color']) ? $act['color'] : 'blue';
+          $colorClass = $colors[$colorKey] ?? $colors['blue'];
         ?>
           <div class="flex gap-3 items-start group">
-            <div class="w-9 h-9 rounded-xl <?= esc($colors[$act['color']]) ?> flex items-center justify-center text-base flex-shrink-0 group-hover:scale-110 transition-transform">
-              <?= $act['icon'] ?>
+            <div class="w-9 h-9 rounded-xl <?= esc($colorClass) ?> flex items-center justify-center text-base flex-shrink-0 group-hover:scale-110 transition-transform">
+              <?= esc($act['icon'] ?? '📌') ?>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-700 dark:text-gray-300 truncate"><?= esc($act['text']) ?></p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><?= esc($act['time']) ?></p>
+              <p class="text-sm text-gray-700 dark:text-gray-300 truncate"><?= esc($act['text'] ?? 'Activity') ?></p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><?= esc($act['time'] ?? 'Recently') ?></p>
             </div>
           </div>
         <?php endforeach; ?>
