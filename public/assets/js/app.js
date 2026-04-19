@@ -1,9 +1,15 @@
 /**
  * EnigmaticAura - Main Application JavaScript
- * Handles: Theme Toggle, Modals, Toasts, Scroll Effects, Mobile Menu
+ * Handles: Theme Toggle, Modals, Toasts, Scroll Effects, Mobile Menu, Confirmations
  */
 
+// Global toast container
+let toastContainer = null;
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Create toast container
+  createToastContainer();
+  
   // 🔹 Loader - Hide after page load
   const loader = document.getElementById('loader');
   if (loader) {
@@ -95,31 +101,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   };
   
-  // 🔹 Toast Notification System
-  window.showToast = (message, type = 'success', duration = 3000) => {
-    const container = document.getElementById('toast-container') || document.body;
+  // 🔹 Modern Toast Notification System
+  window.showToast = (message, type = 'success', duration = 4000) => {
+    if (!toastContainer) createToastContainer();
     
     const toast = document.createElement('div');
-    const colors = {
-      success: 'bg-emerald-500',
-      error: 'bg-rose-500',
-      warning: 'bg-amber-500',
-      info: 'bg-brand-500'
-    };
-    const icons = {
-      success: '✓',
-      error: '✕',
-      warning: '⚠',
-      info: 'ℹ'
+    const config = {
+      success: { 
+        icon: '✓', 
+        color: 'from-emerald-500 to-green-600', 
+        bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+        border: 'border-emerald-200 dark:border-emerald-800',
+        text: 'text-emerald-700 dark:text-emerald-400'
+      },
+      error: { 
+        icon: '✕', 
+        color: 'from-rose-500 to-red-600', 
+        bg: 'bg-rose-50 dark:bg-rose-900/20',
+        border: 'border-rose-200 dark:border-rose-800',
+        text: 'text-rose-700 dark:text-rose-400'
+      },
+      warning: { 
+        icon: '⚠', 
+        color: 'from-amber-500 to-orange-600', 
+        bg: 'bg-amber-50 dark:bg-amber-900/20',
+        border: 'border-amber-200 dark:border-amber-800',
+        text: 'text-amber-700 dark:text-amber-400'
+      },
+      info: { 
+        icon: 'ℹ', 
+        color: 'from-blue-500 to-indigo-600', 
+        bg: 'bg-blue-50 dark:bg-blue-900/20',
+        border: 'border-blue-200 dark:border-blue-800',
+        text: 'text-blue-700 dark:text-blue-400'
+      }
     };
     
-    toast.className = `flex items-center gap-3 px-5 py-3 rounded-xl text-white shadow-2xl transform translate-y-4 opacity-0 transition-all duration-300 ${colors[type] || colors.info}`;
+    const settings = config[type] || config.info;
+    
+    toast.className = `group relative flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl transform translate-y-4 opacity-0 transition-all duration-500 ${settings.bg} ${settings.border} border backdrop-blur-sm overflow-hidden`;
     toast.innerHTML = `
-      <span class="text-lg font-bold">${icons[type] || icons.info}</span>
-      <p class="font-medium text-sm">${message}</p>
+      <div class="absolute inset-0 bg-gradient-to-r ${settings.color} opacity-0 group-hover:opacity-5 transition-opacity"></div>
+      <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${settings.color} text-white font-bold shadow-lg flex-shrink-0">
+        ${settings.icon}
+      </div>
+      <p class="font-medium text-sm ${settings.text} pr-8">${message}</p>
+      <button onclick="this.parentElement.remove()" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     `;
     
-    container.appendChild(toast);
+    toastContainer.appendChild(toast);
     
     // Animate in
     requestAnimationFrame(() => {
@@ -129,8 +161,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auto remove
     setTimeout(() => {
       toast.classList.add('translate-y-4', 'opacity-0');
-      setTimeout(() => toast.remove(), 300);
+      setTimeout(() => toast.remove(), 500);
     }, duration);
+  };
+  
+  // 🔹 Modern Confirmation Dialog
+  window.showConfirm = (options = {}) => {
+    return new Promise((resolve) => {
+      const {
+        title = 'Are you sure?',
+        message = 'This action cannot be undone.',
+        confirmText = 'Confirm',
+        cancelText = 'Cancel',
+        type = 'warning', // warning, danger, info
+        icon = '⚠️'
+      } = options;
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4';
+      overlay.innerHTML = `
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-overlay></div>
+        <div data-modal-content class="relative bg-white dark:bg-gray-900 rounded-3xl w-full max-w-md p-6 shadow-2xl transform transition-all scale-95 opacity-0">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${type === 'danger' ? 'from-rose-500 to-red-600' : type === 'info' ? 'from-blue-500 to-indigo-600' : 'from-amber-500 to-orange-600'} flex items-center justify-center text-3xl shadow-lg">
+              ${icon}
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">${title}</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-6">${message}</p>
+            <div class="flex gap-3">
+              <button data-cancel class="flex-1 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-all">
+                ${cancelText}
+              </button>
+              <button data-confirm class="flex-1 px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r ${type === 'danger' ? 'from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500' : type === 'info' ? 'from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500' : 'from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500'} rounded-xl shadow-lg transition-all transform hover:scale-105">
+                ${confirmText}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+      
+      // Animate in
+      requestAnimationFrame(() => {
+        const content = overlay.querySelector('[data-modal-content]');
+        content.classList.remove('scale-95', 'opacity-0');
+      });
+      
+      const cleanup = () => {
+        overlay.classList.add('opacity-0');
+        setTimeout(() => {
+          overlay.remove();
+          document.body.style.overflow = '';
+        }, 300);
+      };
+      
+      overlay.querySelector('[data-overlay]').addEventListener('click', () => {
+        resolve(false);
+        cleanup();
+      });
+      
+      overlay.querySelector('[data-cancel]').addEventListener('click', () => {
+        resolve(false);
+        cleanup();
+      });
+      
+      overlay.querySelector('[data-confirm]').addEventListener('click', () => {
+        resolve(true);
+        cleanup();
+      });
+      
+      // Escape key
+      const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+          resolve(false);
+          cleanup();
+          document.removeEventListener('keydown', handleEscape);
+        }
+      };
+      document.addEventListener('keydown', handleEscape);
+    });
   };
   
   // 🔹 Scroll Reveal Animation using Intersection Observer
@@ -194,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const originalText = submitBtn.innerHTML;
       
       // Show loading state
-      submitBtn.innerHTML = '<span>Sending...</span>';
+      submitBtn.innerHTML = '<span class="animate-spin">⏳</span> Sending...';
       submitBtn.disabled = true;
       
       try {
@@ -273,6 +384,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Helper function to create toast container
+function createToastContainer() {
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'fixed top-4 right-4 z-[9999] flex flex-col gap-3 pointer-events-none';
+    document.body.appendChild(toastContainer);
+  }
+}
 
 // 🔹 Utility Functions
 window.debounce = (func, wait) => {
